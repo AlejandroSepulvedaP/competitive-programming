@@ -6,11 +6,9 @@ class Solution {
 public:
     bool isMatch(string s, string p) {
         int m = s.size(), n = p.size();
-        // Usar vector<vector<bool>> para la tabla de DP
         vector<vector<bool>> matching(m + 1, vector<bool>(n + 1, false));
         matching[0][0] = true; // Caso base: cadenas vacías coinciden.
         char charS, charP, charP1;
-        // Inicializar cuando `s` está vacío y `p` contiene patrones como "a*b*c*"
         for (int j = 2; j <= n; ++j) {
             if (p[j - 1] == '*') {
                 matching[0][j] = matching[0][j - 2];
