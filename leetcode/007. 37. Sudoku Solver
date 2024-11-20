@@ -1,0 +1,89 @@
+class Solution {
+private:
+    int row[9];
+    int column[9];
+    int block[3][3];
+    bool solve;
+    vector<pair<int, int>> space;
+public:
+
+    void flip(int i, int j, int number){
+        row[i] ^= 1 << number;
+        column[j] ^= 1 << number;
+        block[i/3][j/3] ^= 1 << number;
+    }
+    
+    void dfs(vector<vector<char>>& board, int pos){
+    if(pos == space.size()){
+        solve = true;
+        return;
+    }
+
+     auto [i, j] = space[pos];
+     int mask = ~(row[i] | column[j] | block[i / 3][j / 3]) & 0x1ff;
+     while(mask && !solve){
+        int digitMask = mask & (-mask);
+        int digit = __builtin_ctz(digitMask);
+        board[i][j] = digit + '0' + 1;
+        flip(i, j, digit);
+        dfs(board, pos+1);
+        flip(i, j, digit);
+        mask &= (mask - 1);
+     }
+    }
+
+    void solveSudoku(vector<vector<char>>& board){
+        memset(row, 0, sizeof(row));
+        memset(column, 0, sizeof(column));
+        memset(block, 0, sizeof(block));
+
+        solve = false;
+
+        int digit;
+        int mask;
+
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board[i][j] != '.'){
+                   digit = board[i][j] - '0' - 1;
+                   flip(i, j, digit); 
+                }
+            }
+        }
+
+        int modified = true;
+        while (modified) {
+            modified = false;
+            for (int i = 0; i < 9; ++i) {
+                for (int j = 0; j < 9; ++j) {
+                    if (board[i][j] == '.') {
+                        int mask = ~(row[i] | column[j] | block[i / 3][j / 3]) & 0x1ff;
+                        if (!(mask & (mask - 1))) {
+                            int digit = __builtin_ctz(mask);
+                            flip(i, j, digit);
+                            board[i][j] = digit + '0' + 1;
+                            modified = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board[i][j] == '.'){
+                    space.emplace_back(i, j);
+                }
+            }
+        }
+        dfs(board, 0);
+     }
+};
+
+// The trick in the dfs is that you are trying valid possibilities, possibilities that don't break the rules.
+// The matter here is that even if a possibility doesn't break the rules, the mere possibility makes that
+// in the other cells, there are less options. So, if a possiblity doesn't break the rules but is the wrong path,
+// it is gonna led to mask = 0, so the the recursion in while never happen and it never reach the base case.
+//
+//
