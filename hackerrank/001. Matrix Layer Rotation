@@ -1,0 +1,66 @@
+// You are given a 2D matrix of dimension  and a positive integer . You have to rotate the matrix 
+// times and print the resultant matrix. Rotation should be in anti-clockwise direction.
+// Rotation of a  matrix is represented by the following figure. Note that in one rotation, you have 
+// to shift elements by one step only.
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int matrix[300][300];
+    int cF, cC, r;
+    cin >> cF >> cC >> r;
+    
+    int cFO = cF, cCO = cC;
+    
+    for(int i = 0; i < cF; i++){
+        for(int j = 0; j < cC; j++){
+            cin >> matrix[i][j];
+        }
+    }
+
+    int aux, aux1;
+    int iF = 0;
+    int iC = 0;
+    while(cF >= 2 && cC >= 2){
+        int rotaciones = r % (2*cF+2*(cC-2));
+        for(int i = 0; i < rotaciones; i++){
+            //parte izquierda
+            aux = matrix[iF][iC];
+            for(int i = 0; i < cF - 1; i++, iF++){
+                aux1 = matrix[iF+1][iC];
+                matrix[iF+1][iC] = aux;
+                aux = aux1;
+            }
+            //parte abajo
+            for(int i = 0; i < cC - 1; i++, iC++){
+                aux1 =  matrix[iF][iC+1];
+                matrix[iF][iC+1] = aux;
+                aux = aux1;
+            }
+            //parte derecha
+            for(int i = 0; i < cF - 1; i++, iF--){
+                aux1 = matrix[iF-1][iC];
+                matrix[iF-1][iC] = aux;
+                aux = aux1;
+            }
+            //parte  arriba
+            for(int i = 0; i < cC - 1; i++, iC--){
+                aux1 =  matrix[iF][iC-1];
+                matrix[iF][iC-1] = aux;
+                aux = aux1;
+            }
+        }
+        cF = cF - 2;
+        cC = cC - 2;
+        iF++;
+        iC++;
+    }
+    
+    for (int i = 0; i < cFO; ++i) {
+        for (int j = 0; j < cCO; ++j) {
+            cout << matrix[i][j] << " " ;
+        }
+         cout<<endl;
+    }
+    return 0;
+}
