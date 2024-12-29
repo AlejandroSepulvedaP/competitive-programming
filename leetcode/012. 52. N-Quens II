@@ -1,0 +1,37 @@
+class Solution {
+    public:
+    void solve(int row, vector<string>& board, int& ans, vector<int>& leftRow, 
+                vector<int>& upperDiagonal, vector<int>& lowerDiagonal, int n) {
+        if (row == n) {
+            ans++;
+            return;
+        }
+        for (int col = 0; col < n; col++) {
+            /* row + col because, for instance, 3,0, 2,1, 1,2, 0,3
+                row - col + n - 1 because, for instance, 0,0, 1,1, 2,2, 3,3 */
+            if (leftRow[col] == 0 && lowerDiagonal[row + col] == 0 && upperDiagonal[row - col + n - 1] == 0) {
+                board[row][col] = 'Q';
+                leftRow[col] = 1;
+                lowerDiagonal[row + col] = 1;
+                upperDiagonal[row - col + n - 1] = 1;
+                solve(row + 1, board, ans, leftRow, upperDiagonal, lowerDiagonal, n);
+                board[row][col] = '.';
+                leftRow[col] = 0;
+                lowerDiagonal[row + col] = 0;
+                upperDiagonal[row - col + n - 1] = 0;
+            }
+        }
+    }
+
+    int totalNQueens(int n) {
+        int ans;
+        vector<string> board(n, string(n, '.'));
+        vector<int> leftRow(n, 0);
+        // max value, if n = 3, then row = 2 and column = 2, then 2 * n - 1 = 4 = 2+2
+        vector<int> upperDiagonal(2 * n - 1, 0);
+        vector<int> lowerDiagonal(2 * n - 1, 0);
+
+        solve(0, board, ans, leftRow, upperDiagonal, lowerDiagonal, n);
+        return ans;
+    }
+};
