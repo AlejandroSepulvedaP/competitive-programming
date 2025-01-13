@@ -34,3 +34,42 @@ public:
         return 0;
     }
 };
+
+/*
+1WHILE
+hit, 
+cog, 
+  2FOR: word: hit
+    3FOR: original_char: h
+    3FOR: original_char: i
+      IN DICTIONARY: hot
+    3FOR: original_char: t
+1WHILE
+hot, 
+cog, 
+  2FOR: word: hot
+    3FOR: original_char: h
+      IN DICTIONARY: dot
+      IN DICTIONARY: lot
+    3FOR: original_char: o
+    3FOR: original_char: t
+1WHILE
+lot, dot, 
+cog, 
+  2FOR: word: cog
+    3FOR: original_char: c
+      IN DICTIONARY: dog
+      IN DICTIONARY: log
+    3FOR: original_char: o
+    3FOR: original_char: g
+1WHILE
+log, dog, 
+lot, dot, 
+  2FOR: word: log
+    3FOR: original_char: l
+      IN DICTIONARY: cog
+    3FOR: original_char: o
+    3FOR: original_char: g
+******LADER:  lot
+5
+*/
