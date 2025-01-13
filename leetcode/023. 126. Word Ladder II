@@ -69,3 +69,97 @@ public:
         return {result.begin(), result.end()};
     }
 };
+
+
+/*
+IN WHILE 1
+  IN FOR 1: from: hit
+    IN FOR 2: iter: cog
+    IN FOR 2: iter: log
+    IN FOR 2: iter: dog
+    IN FOR 2: iter: dot
+    IN FOR 2: iter: lot
+    IN FOR 2: iter: hot
+      let's push
+
+IN WHILE 1
+  IN FOR 1: from: hot
+    IN FOR 2: iter: cog
+    IN FOR 2: iter: log
+    IN FOR 2: iter: dog
+    IN FOR 2: iter: dot
+      let's push
+    IN FOR 2: iter: lot
+      let's push
+
+IN WHILE 1
+  IN FOR 1: from: dot
+    IN FOR 2: iter: cog
+    IN FOR 2: iter: log
+    IN FOR 2: iter: dog
+      let's push
+  IN FOR 1: from: lot
+    IN FOR 2: iter: cog
+    IN FOR 2: iter: log
+      let's push
+
+IN WHILE 1
+  IN FOR 1: from: dog
+    IN FOR 2: iter: cog
+      END REACHED
+  IN FOR 1: from: log
+    IN FOR 2: iter: cog
+      END REACHED
+
+LEVELS
+hit,
+hot,
+dot, lot,
+dog, log,
+
+AT LAST
+IN FOR 1:
+  IN WHILE 1
+  cog,
+    IN FOR 2: path: cog
+      dog, cog,
+    IN FOR 2: path: cog
+      dog, cog,
+      log, cog,
+IN FOR 1:
+  IN WHILE 1
+  dog, cog,
+    IN FOR 2: path: dog
+      log, cog,
+      dot, dog, cog,
+    IN FOR 2: path: dog
+  IN WHILE 1
+  log, cog,
+    IN FOR 2: path: log
+    IN FOR 2: path: log
+      dot, dog, cog,
+      lot, log, cog,
+IN FOR 1:
+  IN WHILE 1
+  dot, dog, cog,
+    IN FOR 2: path: dot
+      lot, log, cog,
+      hot, dot, dog, cog,
+  IN WHILE 1
+  lot, log, cog,
+    IN FOR 2: path: lot
+      hot, dot, dog, cog,
+      hot, lot, log, cog,
+IN FOR 1:
+  IN WHILE 1
+  hot, dot, dog, cog,
+    IN FOR 2: path: hot
+      hot, lot, log, cog,
+      hit, hot, dot, dog, cog,
+  IN WHILE 1
+  hot, lot, log, cog,
+    IN FOR 2: path: hot
+      hit, hot, dot, dog, cog,
+      hit, hot, lot, log, cog,
+hit, hot, dot, dog, cog,
+hit, hot, lot, log, cog,*/
