@@ -36,6 +36,9 @@ public:
 };
 
 /*
+ "hit" "cog"
+ {"hot", "dot", "dog", "lot", "log", "cog"}
+
 1WHILE
 hit, 
 cog, 
