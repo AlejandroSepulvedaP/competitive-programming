@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        int row = dungeon.size();
+        int col = dungeon[0].size();
+        vector<vector<int>> dp(row, vector<int>(col, INT_MAX));
+        // Start from the bottom-right corner (princess's room)
+        dp[row - 1][col - 1] = max(1, 1 - dungeon[row - 1][col - 1]);
+        // Fill the dp table in reverse order
+        for (int i = row - 1; i >= 0; i--) {
+            for (int j = col - 1; j >= 0; j--) {
+                // Skip the bottom-right corner (already initialized)
+                if (i == row - 1 && j == col - 1) continue;
+                int down = INT_MAX;
+                int right = INT_MAX;
+                // Check the cell below
+                if (i < row - 1) {
+                    down = dp[i + 1][j];
+                }
+                // Check the cell to the right
+                if (j < col - 1) {
+                    right = dp[i][j + 1];
+                }
+                // Calculate the minimum health required for the current cell
+                dp[i][j] = max(1, min(down, right) - dungeon[i][j]);
+            }
+        }
+        // The answer is the minimum health required at the starting cell (0, 0)
+        return dp[0][0];
+    }
+};
