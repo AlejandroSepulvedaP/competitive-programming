@@ -1,0 +1,33 @@
+class Solution {
+public:
+    void solve(int i, int pos, int s, string &test,
+        unordered_set<string> &wordSet, string &st,  vector<string> &ans
+    ) {
+        if (i == s-1) {
+            test += st[i];
+            if(wordSet.find(st.substr(pos, i - pos+1)) != wordSet.end()) {
+                ans.push_back(test);
+            }
+            test.pop_back();
+            return;
+        }
+        test+= st[i];
+        // end substring if you can
+        if(wordSet.find(st.substr(pos, i - pos + 1)) != wordSet.end()) {
+            test+= " ";
+            solve(i+1, i+1, s, test, wordSet, st, ans );
+            test.pop_back();
+        }
+        // involve this character and move on
+        solve(i+1, pos, s, test, wordSet, st, ans);
+        test.pop_back();
+    }
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        int n = s.length();
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        vector<string> ans;
+        string s1 = "";
+        solve(0, 0, n, s1, wordSet, s, ans);
+        return ans;
+    }
+};
