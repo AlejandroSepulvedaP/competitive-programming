@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int countDigitOne(int n) {
+        if (n == 0) return 0;
+        int aux = n, toR = 0;
+        vector<int> vDigits;
+        while(aux){
+            vDigits.insert(vDigits.begin(), aux%10);
+            aux /= 10; 
+        }
+        aux = n;
+        int sz = vDigits.size()-1;
+        for(int i = 0; i < vDigits.size() - 1; i++){
+            toR += (sz*(pow(10, sz-1))) * vDigits[i];
+            if(vDigits[i] > 1) toR += pow(10, sz);
+            else if(vDigits[i] == 1) toR += aux % int(pow(10, sz)) + 1;
+            sz--;
+        }
+        if(vDigits.back() != 0) toR++;
+        return toR;
+    }
+};
+
+/*
+0 to 9 -> 1
+0 to 99 -> 20
+0 to 999 -> 300
+0 to 9999 -> 4000
+7431
+300 * 7 + 1000 + 20 * 4 + 100 + 1 * 3 + 10 + 1
+7231
+300 * 7 + 1000 + 20 * 2 + 100 + 1 * 3 + 10 + 1
+7181
+300 * 7 + 1000 + 20 * 1 + 82 + 1 * 8 + 10 + 1
+7081
+300 * 7 + 1000 + 1 * 8 + 10 + 1
+*/
