@@ -1,0 +1,40 @@
+class MedianFinder {
+public:
+    priority_queue<int> s; // Max-heap for the smaller half of numbers
+    priority_queue<int, vector<int>, greater<int>> g; // Min-heap for the larger half of numbers
+
+    MedianFinder() {}
+
+    void addNum(int num) {
+        // Step 1: Push to one of the heaps
+        if (s.empty() || num <= s.top()) {
+            s.push(num);
+        } else {
+            g.push(num);
+        }
+
+        // Step 2: Balance the heaps
+        if (s.size() > g.size() + 1) {
+            g.push(s.top());
+            s.pop();
+        } else if (g.size() > s.size()) {
+            s.push(g.top());
+            g.pop();
+        }
+    }
+
+    double findMedian() {
+        if (s.size() > g.size()) {
+            return s.top(); // Odd total size, max-heap root is the median
+        } else {
+            return (s.top() + g.top()) / 2.0; // Even total size, average of both roots
+        }
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
