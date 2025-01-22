@@ -1,0 +1,28 @@
+class Solution {
+   public:
+	vector<int> countSmaller(vector<int>& nums) {
+		int n = nums.size();
+        //**fenwick tree is 1-based index**
+        // less number i can get -10000 + 10000 + 1 = 1
+        // max number i can get 10000 + 10000 + 1 = 20001
+		int m = 20002;
+		array<int, 20002> a = {0};
+		vector<int> ans(n, 0);
+		for (int i = n - 1; i >= 0; --i) {
+			int y = nums[i];
+			int x = y + 10000 + 1;
+			int sum = 0;
+			while (x > 0) {
+				sum += a[x];
+				x -= x & -x;
+			}
+			x = y + 10000 + 2;
+			ans[i] = sum;
+			while (x < m) {
+				a[x] += 1;
+				x += x & -x;
+			}
+		}
+		return ans;
+	}
+};
