@@ -50,11 +50,11 @@ public:
         for(int i=0;i<n;i++){
             sum+=nums[i];
             ind=lower_bound(pref.begin(),pref.end(),sum)-pref.begin()+1;
-            // We have two cases, were x is the largest sum that satisfies the property sum(i,j) <= upper
+            // We have two cases, were x is the largest pref that satisfies the property pref[i-1] <= pref[j]-lowe
             // x  = pref[j]-lower, then we have to add + 1 because Fenwick tree, but upper_bound already does this
             // x  < pref[j]-lower, upper_bound automatically directs us to the nearest greater of x, whose place is actually of x in the fenwick tree 
             int r=upper_bound(pref.begin(),pref.end(),sum-lower)-pref.begin();
-            // Here we only need the first x that satisfies the property lower <= sum(i,j), and add + 1 in order to access to its place
+            // Here we only need the first x that satisfies the property pref[j]-upper <= pref[i-1], and add + 1 in order to access to its place
             int l=lower_bound(pref.begin(),pref.end(),sum-upper)-pref.begin()+1;
             ans+= BITS.sum(l,r);
             BITS.add(ind,1);
