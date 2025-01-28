@@ -11,7 +11,7 @@ public:
         // Fermat's Little Theorem
         long long denom_inv = 1;
         long long exp = mod - 2;
-        while (exp) {
+        while (exp) {   
             if (exp % 2) denom_inv = denom_inv * denom % mod;
             denom = denom * denom % mod;
             exp /= 2;
@@ -76,5 +76,9 @@ each pair appears two times, so 10 * 2
 
 if 1,5,3
 then {1,2,3},{1,2,4},{1,2,5}
-each pair ppears three times, so 10 * 3
+each pair ppears three times, so 20 * 3
+
+if 1,5,4
+then {1,2,3,4},{1,2,3,5},{1,2,4,5}
+each pair ppears three times, so 20 * 3
 */
