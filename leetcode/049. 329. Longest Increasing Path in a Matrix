@@ -19,9 +19,7 @@ public:
 
     int dfs(int i, int j, vector<vector<int>>& mat) {
         if(path[i][j] > 0) return path[i][j];
-        if(path[i][j] == -1) return 0;
         int max_next = 0;
-        path[i][j] = -1;
         if(i > 0   && mat[i][j] < mat[i-1][j]) max_next = max(max_next, dfs(i-1, j, mat));
         if(j > 0   && mat[i][j] < mat[i][j-1]) max_next = max(max_next, dfs(i, j-1, mat));
         if(i < m-1 && mat[i][j] < mat[i+1][j]) max_next = max(max_next, dfs(i+1, j, mat));
