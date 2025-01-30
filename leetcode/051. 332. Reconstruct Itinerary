@@ -1,0 +1,32 @@
+class Solution {
+public:
+  vector<string> findItinerary(vector<vector<string>>& tickets) {
+    unordered_map<string, queue<string>> flightDest;
+
+    sort(tickets.begin(), tickets.end());
+    
+    for (int i = 0; i < tickets.size(); i++) {
+      flightDest[tickets[i][0]].push(tickets[i][1]);
+    }
+
+    vector<string> itinerary;
+    vector<string> prevAirpts;
+    string currAirpt = "";
+
+    prevAirpts.push_back("JFK");
+    while (!prevAirpts.empty()) {
+      currAirpt = prevAirpts.back();
+      if (!flightDest[currAirpt].empty()) {
+        prevAirpts.push_back(flightDest[currAirpt].front());
+        flightDest[currAirpt].pop();
+      } else {
+        itinerary.push_back(currAirpt);
+        prevAirpts.pop_back();
+      }
+    }
+
+    reverse(itinerary.begin(), itinerary.end());
+
+    return itinerary;
+  }
+};
