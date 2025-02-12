@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool canCross(vector<int>& stones) {
+        int n=stones.size();
+        if(stones[1]!=1) return 0;
+        static bitset<100> dp[2001];
+        static int maxJump[2001];
+        for(int i=0;i<n;i++){
+            dp[i] = 0;
+            maxJump[i] = 0;
+        }
+        dp[0][0] = 1;
+        for(int i=0;i<n;i++){
+            int mj = maxJump[i];
+            for(int j=i+1;j<n;j++){
+                int dist = stones[j] - stones[i];
+                if(dist>mj+1) break;
+                if(dist!=0 && dp[i][dist-1]){
+                    dp[j][dist] = 1;
+                    if(dist>maxJump[j]) maxJump[j] = dist;
+                } else if(dp[i][dist]){
+                    dp[j][dist] = 1;
+                    if(dist>maxJump[j]) maxJump[j] = dist;
+                } else if(dist+1<100 && dp[i][dist+1]){
+                    dp[j][dist] = 1;
+                    if(dist>maxJump[j]) maxJump[j] = dist;
+                }
+                if(dp[j][dist] && j==n-1) return 1;
+            }
+        }
+        return false;
+    }
+};
+
+// suppose a jump from A to B, where we need a distance x.
+// in order to jump to A, we needed 1) x-1 or 2) x or 3) x+1
+// in any case, if we wanted to reach to B from A, with 1) the sum (x-1)+1, with 2) we sum x+0, with 3) we sum (x+1)-1.
+// all represents x.
