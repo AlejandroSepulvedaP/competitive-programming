@@ -1,74 +1,77 @@
 class Solution {
 public:
-    void eliminate(map<int,int>& repeats, int& excedente){
-        for(auto it = repeats.begin(); it != repeats.end(); it++){
-            for(int i = 0; i < it->second && excedente > 0;){
-                if(it->first%3 == 0 && it->second > 0 && excedente > 0){
-                    it->second--;
-                    excedente--;
-                    repeats[it->first-1]++;
-                }
-                else i++;
-            }
-        }
-        for (auto it = repeats.begin(); it != repeats.end();){
-            if(!excedente) return;
-            else if((it->first-2)*it->second<=excedente){
-                excedente -= (it->first-2)*it->second;
-                it = repeats.erase(it);
-            }
-            else{
-                for(int i = 0; i < it->second; i++){
-                    if(excedente >= it->first-2)
-                        repeats[it->first]--, excedente -= it->first-2;
-                    else if(excedente > 0){
-                        it->second--;
-                        repeats[it->first-excedente]++;
-                        excedente -= excedente;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
     int strongPasswordChecker(string password) {
-        if(password == "aaaaaaaAAAAAA6666bbbbaaaaaaABBC") return 13;
-        int pass = 0, countRepeat = 0, steps = 0, sz = password.size(), jumps = 0;    
-        map<int, int> repeats;
-        char repeat = '$';
-        for(const char& c : password + '$'){
-            if(isupper(c)) pass |= 1 << 0;
-            else if(islower(c)) pass |= 1 << 1;
-            else if(isdigit(c)) pass |= 1 << 2; 
-            if(repeat == c) countRepeat++;
-            else{
-                if(countRepeat > 2) repeats[countRepeat]++;
-                repeat = c; 
-                countRepeat = 1;
+        int n = password.size();
+        bool digit = false;
+        bool lower = false;
+        bool upper = false;
+        for(char ch : password)
+        {
+            if(isdigit(ch))
+            {
+                digit = true;
+            }
+            if(islower(ch))
+            {
+                lower = true;
+            }
+            if(isupper(ch))
+            {
+                upper = true;
             }
         }
-        if(sz == 6 && (repeats[3] == 2 || repeats[6])) return 2;
-        else if(sz <= 20 && sz >= 6 && repeats.empty() && pass == 7) return 0;
-        int pass1 =3-__builtin_popcount(pass);
-        if(sz > 6){
-            int excedente = sz - 20;
-            if(excedente > 0){
-                steps = excedente;
-                eliminate(repeats, excedente);
-            }
-            for (auto it = repeats.begin(); it != repeats.end();it++){
-                if(it->second == 0) continue;
-                steps += ((it->first)/3)*it->second;
-                jumps += ((it->first)/3)*it->second;
-            }
-            if(jumps == 0) steps += pass1;
-            else if(jumps < pass1) steps += pass1-jumps;
+        int missing = !digit + !lower + !upper;
+        if(n < 6){
+            return max(6 - n, missing);
         }
-        else{
-            steps += 6-sz;
-            if(6-sz < pass1) steps += pass1-(6-sz);
+        int excess = max(0, n - 20);
+        int replacements = 0;
+        vector<int> repeating;
+        for(int i = 0; i < n;)
+        {
+            int j = i;
+            while(j < n && password[j] == password[i])
+            {
+                j++;
+            }
+            if(j - i >= 3)
+            {
+                repeating.push_back(j - i);
+            }
+            i = j;
         }
-        return steps;
+        int deletions = excess;
+        int i = 0;
+        int m = repeating.size();
+        while(i < m && excess > 0)
+        {
+            if(repeating[i] % 3 == 0)
+            {
+                repeating[i]--;
+                excess--;
+            }
+            i++;
+        }
+        i = 0;
+        while(i < repeating.size() && excess >= 2)
+        {
+            if(repeating[i] % 3 == 1)
+            {
+                repeating[i] -= 2;
+                excess -= 2;
+            }
+            i++;
+        }
+        for(auto it : repeating)
+        {
+            if(excess > 0){
+                int remove = min(it-2, excess);
+                it -= remove;
+                excess -= remove;
+            }
+            replacements += it / 3;
+        }
+        int ans = deletions + max(missing, replacements);
+        return ans;
     }
 };
